@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ItemType>PackagingProject</ItemType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{236D76DC-4FA8-433B-8422-517AD41C3D0C}</ProjectGuid>
+    <Packages>
+      <Packages>
+        <Package name="Linux Binaries">
+          <Builder targetFile="..\Packages\screensaver-settings-bin.tar.gz" platform="Linux" configuration="Release" ctype="BinariesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="..\screensaver-settings\screensaver-settings.csproj" />
+            </ChildEntries>
+            <ExcludedFiles>
+              <File>screensaver-settings,ProgramFiles,screensaver-settings.exe.mdb</File>
+            </ExcludedFiles>
+            <RootEntry path="..\screensaver-settings.sln" id=":root:" />
+          </Builder>
+        </Package>
+        <Package name="Tarball">
+          <Builder TargetDirectory="..\Packages" DefaultConfiguration="Release" ctype="TarballDeployTarget">
+            <ChildEntries>
+              <SolutionItemReference path="..\screensaver-settings\screensaver-settings.csproj" />
+            </ChildEntries>
+            <ExcludedFiles>
+              <File>screensaver-settings,ProgramFiles,screensaver-settings.exe.mdb</File>
+            </ExcludedFiles>
+            <RootEntry path="..\screensaver-settings.sln" id=":root:" />
+          </Builder>
+        </Package>
+        <Package name="MonoDevelop Sources">
+          <Builder targetFile="..\Packages\screensaver-settings-src.tar.gz" format="MonoDevelop.Projects.FileFormat" ctype="SourcesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="..\screensaver-settings\screensaver-settings.csproj" />
+              <SolutionItemReference path="sss-packaging.mdproj" />
+            </ChildEntries>
+            <RootEntry path="..\screensaver-settings.sln" id=":root:" />
+          </Builder>
+        </Package>
+      </Packages>
+    </Packages>
+    <ReleaseVersion>0.4.1</ReleaseVersion>
+  </PropertyGroup>
+</Project>

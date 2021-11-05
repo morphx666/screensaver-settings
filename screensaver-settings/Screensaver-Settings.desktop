@@ -1,0 +1,15 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[en_US]=gnome-panel-launcher
+Name[en_US]=Screensaver Settings
+Exec=mono /home/xavier/Projects/screensaver-settings/screensaver-settings/bin/screensaver-settings.exe
+Name=Screensaver Settings
+Icon=/home/xavier/Projects/screensaver-settings/screensaver-settings/bin/icon.png
+GenericName=Screensaver Settings
+Comment=Manage and configure your screensavers
+Categories=DesktopSettings;Settings;Amusement;GTK;GNOME;
+OnlyShowIn=GNOME;
