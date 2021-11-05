@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Gnome;
 
-public partial class MainWindow : Window {
+public partial class MainWindow : Gtk.Window {
 	static string GNOME_SESSION_DIR = "/desktop/gnome/session";
 	static string GCONF_APP_PATH = "/apps/gnome-screensaver";
 	static string IDLEDELAY_KEY = GNOME_SESSION_DIR + "/idle_delay";

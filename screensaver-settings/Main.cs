@@ -24,56 +24,58 @@ using Gtk;
 using System.IO;
 
 class MainClass {
-	public static string SS_XML_PATH = "/usr/share/xscreensaver/config/";
-	public static string SS_THEME_PATH = "/usr/share/applications/screensavers/";
-	public static string SS_BIN_PATH = "/usr/lib/xscreensaver/";
-	public static string SU_CMD = "gksudo";
-	public static string SU_PARAMS = "-d -m \"{2}\" cp {0} {1}";
-	public static string WIN_REDIR = "-window-id";
-	
-	public static void Main (string[] args)
-	{
-		Application.Init ();
-		
-		//Try to support other distros as well...
-		if (!Directory.Exists (SS_XML_PATH)) {
-			SS_XML_PATH = "/etc/xscreensaver/";
-			SU_CMD = "gnomesu";
-			SU_PARAMS = "-c='cp {0} {1}'";
-		}
+    public static string SS_XML_PATH = "/usr/share/xscreensaver/config/";
+    public static string SS_THEME_PATH = "/usr/share/applications/screensavers/";
+    public static string SS_BIN_PATH = "/usr/lib/xscreensaver/";
+    public static string SU_CMD = "gksudo";
+    public static string SU_PARAMS = "-d -m \"{2}\" cp {0} {1}";
+    public static string WIN_REDIR = "-window-id";
 
-		bool sanityCheck = false;
+    public static void Main(string[] args) {
+        Application.Init();
 
-		sanityCheck &= Directory.Exists (SS_XML_PATH);
-		sanityCheck &= Directory.Exists (SS_THEME_PATH);
-		sanityCheck &= Directory.Exists (SS_BIN_PATH);
+        //Try to support other distros as well...
+        if(!Directory.Exists(SS_XML_PATH)) {
+            SS_XML_PATH = "/etc/xscreensaver/";
+            SU_CMD = "gnomesu";
+            SU_PARAMS = "-c='cp {0} {1}'";
+        }
 
-		if (sanityCheck) {
-			MainWindow win = new MainWindow();
-			win.Show();		
-			Application.Run();
-		} else {
-			Dialog dlg = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, "This is a fucked up Linux distro...\nTry installing the following packages:\n\n1) xscreensaver\n2) gnome-screensaver\n3) xscreensaver-data-extra");
-			dlg.Run();
-			dlg.Destroy();
-		}
-	}	
-	
-	public static string[] Split(string text, string separator) {
-		return text.Split(new string[] {separator}, StringSplitOptions.None);
-	}
+        bool sanityCheck = true;
 
-	[DllImport("libgdk-x11-2.0.so.0")]
-	private static extern ulong gdk_x11_drawable_get_xid(IntPtr drawable);
-	
-	public static ulong GetPreviewWindowID(DrawingArea da) {
-		if(da.IsRealized) {
-			ulong id = gdk_x11_drawable_get_xid(da.GdkWindow.Handle);
-			string hex = id.ToString("X");
-			if(hex.Length > 8) hex = hex.Substring(hex.Length - 8);
-			id = ulong.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-			return id;
-		}
-		throw new ApplicationException ("Attempted to get preview window ID before realizing it");
-	}
+        sanityCheck &= Directory.Exists(SS_XML_PATH);
+        sanityCheck &= Directory.Exists(SS_THEME_PATH);
+        //sanityCheck &= Directory.Exists(SS_BIN_PATH);
+        // Newer versions of the screensavers appear to have full paths to the executables, 
+        // so just ignore this path in case it doesn't exist
+        if(!Directory.Exists(SS_BIN_PATH)) SS_BIN_PATH = "";
+
+        if(sanityCheck) {
+            MainWindow win = new MainWindow();
+            win.Show();
+            Application.Run();
+        } else {
+            Dialog dlg = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, "This is a fucked up Linux distro...\nTry installing the following packages:\n\n1) xscreensaver\n2) gnome-screensaver\n3) xscreensaver-data-extra");
+            dlg.Run();
+            dlg.Destroy();
+        }
+    }
+
+    public static string[] Split(string text, string separator) {
+        return text.Split(new string[] { separator }, StringSplitOptions.None);
+    }
+
+    [DllImport("libgdk-x11-2.0.so.0")]
+    private static extern ulong gdk_x11_drawable_get_xid(IntPtr drawable);
+
+    public static ulong GetPreviewWindowID(DrawingArea da) {
+        if(da.IsRealized) {
+            ulong id = gdk_x11_drawable_get_xid(da.GdkWindow.Handle);
+            string hex = id.ToString("X");
+            if(hex.Length > 8) hex = hex.Substring(hex.Length - 8);
+            id = ulong.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+            return id;
+        }
+        throw new ApplicationException("Attempted to get preview window ID before realizing it");
+    }
 }
